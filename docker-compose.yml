@@ -1,0 +1,8 @@
+db:
+  image: mariadb
+  ports:
+    - 3306:3306
+  volumes:
+    - ./data:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=my-secret-pw
