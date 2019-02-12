@@ -60,6 +60,7 @@ class Restaurant(db.Model):
     name = db.Column("dba", db.String)
     building = db.Column(db.String)
     street = db.Column(db.String)
+    borough = db.Column("boro", db.String)
     zip_code = db.Column("zipcode", db.String)
     phone = db.Column(db.String)
     cuisine = db.Column(db.String)
@@ -118,6 +119,7 @@ class RestaurantSchema(ma.Schema):
             "name",
             "building",
             "street",
+            "borough",
             "zip_code",
             "phone",
             "cuisine",
@@ -137,6 +139,7 @@ class RestaurantsSchema(ma.Schema):
             "name",
             "building",
             "street",
+            "borough",
             "zip_code",
             "phone",
             "cuisine",
