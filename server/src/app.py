@@ -154,11 +154,28 @@ def get_restaurants():
     page = request.args.get("page", 1, type=int)
     page_size = request.args.get("page_size", 10, type=int)
 
-    query = Restaurant.query
+    inspectionAlias1 = db.aliased(Inspection)
+    inspectionAlias2 = db.aliased(Inspection)
+
+    # Adapted from https://stackoverflow.com/a/2111420/215484
+    query = (
+        db.session.query(Restaurant)
+        .join(inspectionAlias1)
+        .outerjoin(
+            inspectionAlias2,
+            (Restaurant.camis == inspectionAlias2.camis)
+            & (inspectionAlias1.inspection_date < inspectionAlias2.inspection_date),
+        )
+        .filter(inspectionAlias2.id == None)  # noqa: E711
+    )
 
     cuisine = request.args.get("cuisine")
     if cuisine is not None:
-        query = query.filter_by(cuisine=cuisine)
+        query = query.filter(Restaurant.cuisine == cuisine)
+
+    grade = request.args.get("grade")
+    if grade is not None:
+        query = query.filter(inspectionAlias1.grade == grade)
 
     restaurants = query.paginate(page, page_size).items
 
