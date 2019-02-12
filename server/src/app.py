@@ -152,14 +152,15 @@ restaurants_schema = RestaurantsSchema(strict=True, many=True)
 @app.route("/api/restaurants", methods=["GET"])
 def get_restaurants():
     page = request.args.get("page", 1, type=int)
-    cuisine = request.args.get("cuisine")
+    page_size = request.args.get("page_size", 10, type=int)
 
     query = Restaurant.query
 
+    cuisine = request.args.get("cuisine")
     if cuisine is not None:
         query = query.filter_by(cuisine=cuisine)
 
-    restaurants = query.paginate(page).items
+    restaurants = query.paginate(page, page_size).items
 
     result = restaurants_schema.dump(restaurants)
     return jsonify(result.data)
