@@ -1,0 +1,1 @@
+CREATE INDEX `camis_id_date` ON `inspection` (`camis`, `inspection_id`, `inspection_date`)
