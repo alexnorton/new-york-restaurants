@@ -1,18 +1,35 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import SearchResults from './SearchResults';
+import Pagination from './Pagination';
 
 function SearchPage() {
+  const [page, setPage] = useState(1);
+  const [result, setResult] = useState();
+
+  async function fetchResult() {
+    const res = await fetch(`/api/restaurants?page=${page}`);
+    const body = await res.json();
+
+    setResult(body);
+  }
+
+  useEffect(() => {
+    fetchResult();
+  }, [page]);
+
   return (
     <div>
       <h2>Search</h2>
-      <ul>
-        <li>
-          <Link to="/123">Restaurant 123</Link>
-        </li>
-        <li>
-          <Link to="/456">Restaurant 456</Link>
-        </li>
-      </ul>
+      {result && (
+        <>
+          <Pagination
+            current={page}
+            total={result.pages}
+            onPageChange={setPage}
+          />
+          <SearchResults results={result.results} />
+        </>
+      )}
     </div>
   );
 }
