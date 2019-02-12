@@ -177,10 +177,18 @@ def get_restaurants():
     if grade is not None:
         query = query.filter(inspectionAlias1.grade == grade)
 
-    restaurants = query.paginate(page, page_size).items
+    result = query.paginate(page, page_size)
 
-    result = restaurants_schema.dump(restaurants)
-    return jsonify(result.data)
+    restaurants = restaurants_schema.dump(result.items)
+
+    return jsonify(
+        {
+            "page": result.page,
+            "pages": result.pages,
+            "total": result.total,
+            "results": restaurants.data,
+        }
+    )
 
 
 @app.route("/api/restaurants/<camis>", methods=["GET"])
