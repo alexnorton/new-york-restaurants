@@ -26,28 +26,27 @@ ma = Marshmallow(app)
 
 class Inspection(db.Model):
     __tablename__ = "inspection"
-    id = db.Column("inspection_id", db.Integer, primary_key=True)
+    inspectionId = db.Column("inspection_id", db.Integer, primary_key=True)
     camis = db.Column(db.Integer, db.ForeignKey("restaurant.camis"))
-    inspection_date = db.Column(db.Date)
+    date = db.Column("inspection_date", db.Date)
     action = db.Column(db.String)
     score = db.Column(db.Integer)
     grade = db.Column(db.String)
-    grade_date = db.Column(db.Date)
-    inspection_type = db.Column(db.String)
+    type = db.Column("inspection_type", db.String)
     violations = db.relationship("Violation")
 
 
 class Violation(db.Model):
     __tablename__ = "violation"
-    id = db.Column("violation_id", db.Integer, primary_key=True)
+    violationId = db.Column("violation_id", db.Integer, primary_key=True)
     camis = db.Column(db.Integer)
     inspection_date = db.Column(db.Date)
-    violation_code = db.Column(db.String)
-    violation_description = db.Column(db.String)
-    critical_flag = db.Column(db.String)
+    code = db.Column("violation_code", db.String)
+    description = db.Column("violation_description", db.String)
+    criticalFlag = db.Column("critical_flag", db.String)
     __table_args__ = (
         db.ForeignKeyConstraint(
-            [camis, inspection_date], [Inspection.camis, Inspection.inspection_date]
+            [camis, inspection_date], [Inspection.camis, Inspection.date]
         ),
         {},
     )
@@ -61,28 +60,28 @@ class Restaurant(db.Model):
     building = db.Column(db.String)
     street = db.Column(db.String)
     borough = db.Column("boro", db.String)
-    zip_code = db.Column("zipcode", db.String)
+    zipCode = db.Column("zipcode", db.String)
     phone = db.Column(db.String)
     cuisine = db.Column(db.String)
     inspections = db.relationship("Inspection")
-    last_inspection_date = db.column_property(
-        db.select([Inspection.inspection_date])
+    lastInspectionDate = db.column_property(
+        db.select([Inspection.date])
         .where(Inspection.camis == camis)
-        .order_by(Inspection.inspection_date.desc())
+        .order_by(Inspection.date.desc())
         .limit(1)
         .correlate_except(Inspection)
     )
-    last_inspection_score = db.column_property(
+    lastInspectionScore = db.column_property(
         db.select([Inspection.score])
         .where(Inspection.camis == camis)
-        .order_by(Inspection.inspection_date.desc())
+        .order_by(Inspection.date.desc())
         .limit(1)
         .correlate_except(Inspection)
     )
-    last_inspection_grade = db.column_property(
+    lastInspectionGrade = db.column_property(
         db.select([Inspection.grade])
         .where(Inspection.camis == camis)
-        .order_by(Inspection.inspection_date.desc())
+        .order_by(Inspection.date.desc())
         .limit(1)
         .correlate_except(Inspection)
     )
@@ -91,7 +90,7 @@ class Restaurant(db.Model):
 class ViolationSchema(ma.Schema):
     class Meta:
         model = Violation
-        fields = ("violation_code", "violation_description", "critical_flag")
+        fields = ("violationId", "code", "description", "criticalFlag")
 
 
 class InspectionSchema(ma.Schema):
@@ -100,11 +99,12 @@ class InspectionSchema(ma.Schema):
     class Meta:
         model = Inspection
         fields = (
-            "inspection_date",
+            "inspectionId",
+            "date",
             "action",
             "score",
             "grade",
-            "inspection_type",
+            "type",
             "violations",
         )
 
@@ -120,10 +120,10 @@ class RestaurantSchema(ma.Schema):
             "building",
             "street",
             "borough",
-            "zip_code",
+            "zipCode",
             "phone",
             "cuisine",
-            "last_inspection_date",
+            "lastInspectionDate",
             "inspections",
         )
 
@@ -140,12 +140,12 @@ class RestaurantsSchema(ma.Schema):
             "building",
             "street",
             "borough",
-            "zip_code",
+            "zipCode",
             "phone",
             "cuisine",
-            "last_inspection_date",
-            "last_inspection_score",
-            "last_inspection_grade",
+            "lastInspectionDate",
+            "lastInspectionScore",
+            "lastInspectionGrade",
         )
 
 
@@ -167,9 +167,9 @@ def get_restaurants():
         .outerjoin(
             inspectionAlias2,
             (Restaurant.camis == inspectionAlias2.camis)
-            & (inspectionAlias1.inspection_date < inspectionAlias2.inspection_date),
+            & (inspectionAlias1.date < inspectionAlias2.date),
         )
-        .filter(inspectionAlias2.id == None)  # noqa: E711
+        .filter(inspectionAlias2.inspectionId == None)  # noqa: E711
     )
 
     cuisine = request.args.get("cuisine")
