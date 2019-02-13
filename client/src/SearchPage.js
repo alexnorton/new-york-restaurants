@@ -27,6 +27,7 @@ function SearchPage() {
             total={result.pages}
             onPageChange={setPage}
           />
+          <p>{result.total} restaurants found</p>
           <SearchResults results={result.results} />
         </>
       )}
