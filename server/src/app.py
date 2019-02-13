@@ -200,4 +200,15 @@ def get_restaurant(camis):
     return restaurant_schema.jsonify(restaurant)
 
 
+@app.route("/api/cuisines", methods=["GET"])
+def get_cuisines():
+    rows = (
+        db.session.query(Restaurant.cuisine)
+        .distinct(Restaurant.cuisine)
+        .group_by(Restaurant.cuisine)
+        .all()
+    )
+    return jsonify([row[0] for row in rows])
+
+
 app.run()
