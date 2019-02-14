@@ -1,13 +1,15 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import apiRequest from '../../helpers/apiRequest';
 
 function RestaurantPage(props) {
   const [result, setResult] = useState();
 
   async function fetchResult() {
-    const res = await fetch(`/api/restaurants/${props.match.params.camis}`);
-    const body = await res.json();
+    const apiResult = await apiRequest(
+      `restaurants/${props.match.params.camis}`
+    );
 
-    setResult(body);
+    setResult(apiResult);
   }
 
   useEffect(() => {

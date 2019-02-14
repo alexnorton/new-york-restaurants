@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import apiRequest from '../../helpers/apiRequest';
 import SearchResults from './SearchResults';
 import Pagination from './Pagination';
 import CuisineFilter from './CuisineFilter';
 
 function SearchPage() {
   const [page, setPage] = useState(1);
-  const [cuisine, setCuisine]=useState(null);
+  const [cuisine, setCuisine] = useState(null);
   const [result, setResult] = useState();
 
   async function fetchResult() {
-    let path = `/api/restaurants?page=${page}`;
+    const params = { page };
 
-    if (cuisine) {
-      path += `&cuisine=${cuisine}`;
+    if (cuisine ) {
+      params.cuisine = cuisine;
     }
 
-    const res = await fetch(path);
-    const body = await res.json();
+    const apiResult = await apiRequest('restaurants', params);
 
-    setResult(body);
+    setResult(apiResult);
   }
 
   useEffect(() => {
