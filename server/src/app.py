@@ -173,12 +173,12 @@ def get_restaurants():
     )
 
     cuisine = request.args.get("cuisine")
-    if cuisine is not None:
+    if cuisine:
         query = query.filter(Restaurant.cuisine == cuisine)
 
-    grade = request.args.get("grade")
-    if grade is not None:
-        query = query.filter(inspectionAlias1.grade == grade)
+    grades = request.args.getlist("grade[]")
+    if grades:
+        query = query.filter(inspectionAlias1.grade.in_(grades))
 
     result = query.paginate(page, page_size)
 
