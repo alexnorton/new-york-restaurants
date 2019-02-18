@@ -1,22 +1,12 @@
-function paramsToSearchString(params) {
-  const paramsCopy = { ...params };
-
-  for (const key in paramsCopy) {
-    if (!paramsCopy[key]) {
-      delete paramsCopy[key];
-    }
-  }
-
-  return new URLSearchParams(paramsCopy).toString();
-}
+import objectToSearchString from './objectToSearchString';
 
 async function apiRequest(path, params = {}) {
-  const searchString = paramsToSearchString(params);
+  const searchString = objectToSearchString(params);
 
   let url = `/api/${path}`;
 
   if (searchString !== '') {
-    url += `?${searchString}`;
+    url += searchString;
   }
 
   const res = await fetch(url);

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-function CuisineFilter({ onCuisineChange }) {
+function CuisineFilter({ current, onCuisineChange }) {
   const [cuisines, setCuisines] = useState([]);
-  const [selected, setSelected] = useState(null);
 
   function handleChange({ target: { value } }) {
-    const cuisine = value === "" ? null : value;
-    setSelected(cuisine);
+    const cuisine = value === '' ? null : value;
     onCuisineChange(cuisine);
   }
 
@@ -22,7 +20,7 @@ function CuisineFilter({ onCuisineChange }) {
   }, []);
 
   return (
-    <select value={selected || ""} onChange={handleChange}>
+    <select value={current || ''} onChange={handleChange}>
       <option value="">[All cuisines]</option>
       {cuisines.map(cuisine => (
         <option key={cuisine}>{cuisine}</option>

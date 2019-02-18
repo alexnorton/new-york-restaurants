@@ -1,14 +1,16 @@
 import React from 'react';
 
 function Pagination({ current, total, onPageChange }) {
+  const currentPage = current ? parseInt(current, 10) : 1;
+
   return (
     <span>
-      {current > 1 && (
-        <button onClick={() => onPageChange(current - 1)}>Previous</button>
+      {currentPage > 1 && (
+        <button onClick={() => onPageChange(currentPage - 1)}>Previous</button>
       )}
-      Page {current}
-      {current < total && (
-        <button onClick={() => onPageChange(current + 1)}>Next</button>
+      Page {currentPage}
+      {currentPage < total && (
+        <button onClick={() => onPageChange(currentPage + 1)}>Next</button>
       )}
     </span>
   );

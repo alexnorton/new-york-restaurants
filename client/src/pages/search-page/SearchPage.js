@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import apiRequest from '../../helpers/apiRequest';
+import objectToSearchString from '../../helpers/objectToSearchString';
 import SearchResults from './SearchResults';
 import Pagination from './Pagination';
 import CuisineFilter from './CuisineFilter';
+import searchStringToObject from '../../helpers/searchStringToObject';
 
-function SearchPage() {
-  const [params, setParams] = useState({
-    page: 1,
-    cuisine: null,
-  });
+const DEFAULT_PARAMS = {};
+
+function SearchPage(props) {
+  const initialParams =
+    props.location.search !== ''
+      ? searchStringToObject(props.location.search)
+      : DEFAULT_PARAMS;
+
+  const [params, setParams] = useState(initialParams);
 
   const [result, setResult] = useState();
 
@@ -19,6 +25,12 @@ function SearchPage() {
   }
 
   useEffect(() => {
+    const search = objectToSearchString(params);
+
+    if (props.location.search !== search) {
+      props.history.push({ search });
+    }
+
     fetchResult();
   }, [params]);
 
@@ -28,6 +40,7 @@ function SearchPage() {
       {result && (
         <>
           <CuisineFilter
+            current={params.cuisine}
             onCuisineChange={cuisine => setParams({ page: 1, cuisine })}
           />
           <p>
