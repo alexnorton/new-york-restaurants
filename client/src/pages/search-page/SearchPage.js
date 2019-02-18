@@ -5,17 +5,14 @@ import Pagination from './Pagination';
 import CuisineFilter from './CuisineFilter';
 
 function SearchPage() {
-  const [page, setPage] = useState(1);
-  const [cuisine, setCuisine] = useState(null);
+  const [params, setParams] = useState({
+    page: 1,
+    cuisine: null,
+  });
+
   const [result, setResult] = useState();
 
   async function fetchResult() {
-    const params = { page };
-
-    if (cuisine ) {
-      params.cuisine = cuisine;
-    }
-
     const apiResult = await apiRequest('restaurants', params);
 
     setResult(apiResult);
@@ -23,19 +20,21 @@ function SearchPage() {
 
   useEffect(() => {
     fetchResult();
-  }, [page, cuisine]);
+  }, [params]);
 
   return (
     <div>
       <h2>Search</h2>
       {result && (
         <>
-          <CuisineFilter onCuisineChange={setCuisine} />
+          <CuisineFilter
+            onCuisineChange={cuisine => setParams({ page: 1, cuisine })}
+          />
           <p>
             <Pagination
-              current={page}
+              current={params.page}
               total={result.pages}
-              onPageChange={setPage}
+              onPageChange={page => setParams({ ...params, page })}
             />
           </p>
           <p>{result.total} restaurants found</p>
