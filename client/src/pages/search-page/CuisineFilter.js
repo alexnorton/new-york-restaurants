@@ -5,7 +5,7 @@ function CuisineFilter({ current, onCuisineChange }) {
   const [cuisines, setCuisines] = useState([]);
 
   function handleChange({ target: { value } }) {
-    const cuisine = value === '' ? null : value;
+    const cuisine = value === '' ? undefined : value;
     onCuisineChange(cuisine);
   }
 

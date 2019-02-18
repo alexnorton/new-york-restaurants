@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import apiRequest from '../../helpers/apiRequest';
-import objectToSearchString from '../../helpers/objectToSearchString';
+import {
+  searchStringToObject,
+  objectToSearchString,
+} from '../../helpers/searchString';
 import SearchResults from './SearchResults';
 import Pagination from './Pagination';
 import CuisineFilter from './CuisineFilter';
-import searchStringToObject from '../../helpers/searchStringToObject';
+import GradeFilter from './GradeFilter';
 
 const DEFAULT_PARAMS = {};
 
@@ -41,7 +44,13 @@ function SearchPage(props) {
         <>
           <CuisineFilter
             current={params.cuisine}
-            onCuisineChange={cuisine => setParams({ page: 1, cuisine })}
+            onCuisineChange={cuisine =>
+              setParams({ ...params, page: 1, cuisine })
+            }
+          />
+          <GradeFilter
+            current={params.grade}
+            onGradeChange={grade => setParams({ ...params, page: 1, grade })}
           />
           <p>
             <Pagination
