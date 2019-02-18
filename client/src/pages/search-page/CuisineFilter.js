@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import apiRequest from '../../helpers/apiRequest';
 
 function CuisineFilter({ current, onCuisineChange }) {
   const [cuisines, setCuisines] = useState([]);
@@ -9,10 +10,9 @@ function CuisineFilter({ current, onCuisineChange }) {
   }
 
   async function fetchCuisines() {
-    const res = await fetch(`/api/cuisines`);
-    const body = await res.json();
+    const apiResult = await apiRequest(`cuisines`);
 
-    setCuisines(body);
+    setCuisines(apiResult);
   }
 
   useEffect(() => {
