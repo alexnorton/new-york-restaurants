@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FormGroup, Input } from 'reactstrap';
 import apiRequest from '../../helpers/apiRequest';
 
 function CuisineFilter({ current, onCuisineChange }) {
@@ -20,12 +21,15 @@ function CuisineFilter({ current, onCuisineChange }) {
   }, []);
 
   return (
-    <select value={current || ''} onChange={handleChange}>
-      <option value="">[All cuisines]</option>
-      {cuisines.map(cuisine => (
-        <option key={cuisine}>{cuisine}</option>
-      ))}
-    </select>
+    <FormGroup>
+      <legend>Cuisine</legend>
+      <Input type="select" value={current || ''} onChange={handleChange}>
+        <option value="">[All cuisines]</option>
+        {cuisines.map(cuisine => (
+          <option key={cuisine}>{cuisine}</option>
+        ))}
+      </Input>
+    </FormGroup>
   );
 }
 

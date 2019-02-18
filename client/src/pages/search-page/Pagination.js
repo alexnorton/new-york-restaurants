@@ -1,18 +1,28 @@
 import React from 'react';
+import {
+  Pagination as PaginationElement,
+  PaginationItem,
+  PaginationLink,
+} from 'reactstrap';
 
 function Pagination({ current, total, onPageChange }) {
   const currentPage = current ? parseInt(current, 10) : 1;
 
   return (
-    <span>
-      {currentPage > 1 && (
-        <button onClick={() => onPageChange(currentPage - 1)}>Previous</button>
-      )}
-      Page {currentPage}
-      {currentPage < total && (
-        <button onClick={() => onPageChange(currentPage + 1)}>Next</button>
-      )}
-    </span>
+    <PaginationElement>
+      <PaginationItem disabled={currentPage === 1}>
+        <PaginationLink
+          onClick={() => onPageChange(currentPage - 1)}
+          previous
+        />
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink>Page {currentPage}</PaginationLink>
+      </PaginationItem>
+      <PaginationItem disabled={currentPage === total}>
+        <PaginationLink onClick={() => onPageChange(currentPage + 1)} next />
+      </PaginationItem>
+    </PaginationElement>
   );
 }
 

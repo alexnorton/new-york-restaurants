@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Row, Col } from 'reactstrap';
+
 import apiRequest from '../../helpers/apiRequest';
 import {
   searchStringToObject,
@@ -39,9 +41,9 @@ function SearchPage(props) {
 
   return (
     <div>
-      <h2>Search</h2>
-      {result && (
-        <>
+      <Row>
+        <Col xs={2}>
+          <h2>Search</h2>
           <CuisineFilter
             current={params.cuisine}
             onCuisineChange={cuisine =>
@@ -52,17 +54,21 @@ function SearchPage(props) {
             current={params.grade}
             onGradeChange={grade => setParams({ ...params, page: 1, grade })}
           />
-          <p>
-            <Pagination
-              current={params.page}
-              total={result.pages}
-              onPageChange={page => setParams({ ...params, page })}
-            />
-          </p>
-          <p>{result.total} restaurants found</p>
-          <SearchResults results={result.results} />
-        </>
-      )}
+        </Col>
+        <Col xs="8">
+          {result && (
+            <>
+              <p className="text-right">{result.total} restaurants found</p>
+              <SearchResults results={result.results} />
+              <Pagination
+                current={params.page}
+                total={result && result.pages}
+                onPageChange={page => setParams({ ...params, page })}
+              />
+            </>
+          )}
+        </Col>
+      </Row>
     </div>
   );
 }
