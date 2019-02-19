@@ -63,7 +63,10 @@ function SearchPage(props) {
               <Pagination
                 current={params.page}
                 total={result && result.pages}
-                onPageChange={page => setParams({ ...params, page })}
+                onPageChange={page => {
+                  setParams({ ...params, page });
+                  window.scrollTo(0, 0);
+                }}
               />
             </>
           )}
