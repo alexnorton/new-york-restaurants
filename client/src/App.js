@@ -16,7 +16,7 @@ function App() {
             </NavbarBrand>
           </Container>
         </Navbar>
-        <Container className="mt-4">
+        <Container className="my-4">
           <div>
             <Route exact path="/" component={SearchPage} />
             <Route path="/:camis" component={RestaurantPage} />
