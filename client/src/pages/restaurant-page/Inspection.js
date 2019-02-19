@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardBody } from 'reactstrap';
+import GradeBadge from '../../components/GradeBadge';
 
 function Inspection({ startOpen, inspection }) {
   const [open, setOpen] = useState(startOpen);
@@ -7,11 +8,14 @@ function Inspection({ startOpen, inspection }) {
   return (
     <Card className="mb-2">
       <CardHeader
-        tag="h4"
         onClick={() => setOpen(!open)}
         style={{ cursor: 'pointer', borderBottom: !open && 'none' }}
+        className="d-flex align-items-center"
       >
-        {new Date(inspection.date).toLocaleDateString()}
+        <h4 className="flex-grow-1 mb-0">
+          {new Date(inspection.date).toLocaleDateString()}
+        </h4>
+        <GradeBadge grade={inspection.grade} size={45} fontSize={20} />
       </CardHeader>
       <CardBody style={{ display: !open && 'none' }}>
         <p className="mb-0">
