@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiRequest from '../../helpers/apiRequest';
+import Inspection from './Inspection';
 
 function RestaurantPage(props) {
   const [result, setResult] = useState();
@@ -31,6 +32,10 @@ function RestaurantPage(props) {
     inspections,
   } = result;
 
+  const sortedInspections = inspections.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
   return (
     <>
       <h2>{name}</h2>
@@ -42,32 +47,13 @@ function RestaurantPage(props) {
         <strong>Phone:</strong> {phone}
       </p>
       <h3>Inspections</h3>
-      {inspections.map(
-        ({ inspectionId, date, type, grade, score, action, violations }) => (
-          <Fragment key={inspectionId}>
-            <h4>{date}</h4>
-            <p>
-              <strong>Type:</strong> {type}
-              <br />
-              <strong>Grade:</strong> {grade}
-              <br />
-              <strong>Score:</strong> {score}
-              <br />
-              <strong>Action:</strong> {action}
-            </p>
-            <h5>Violations</h5>
-            <ul>
-              {violations.map(
-                ({ violationId, code, description, criticalFlag }) => (
-                  <li key={violationId}>
-                    {code} - {description} ({criticalFlag})
-                  </li>
-                )
-              )}
-            </ul>
-          </Fragment>
-        )
-      )}
+      {sortedInspections.map((inspection, index) => (
+        <Inspection
+          key={inspection.inspectionId}
+          inspection={inspection}
+          startOpen={index === 0}
+        />
+      ))}
     </>
   );
 }
