@@ -17,7 +17,9 @@ function Pagination({ current, total, onPageChange }) {
         />
       </PaginationItem>
       <PaginationItem>
-        <PaginationLink>Page {currentPage}</PaginationLink>
+        <PaginationLink>
+          Page {currentPage} of {total}
+        </PaginationLink>
       </PaginationItem>
       <PaginationItem disabled={currentPage === total}>
         <PaginationLink onClick={() => onPageChange(currentPage + 1)} next />
