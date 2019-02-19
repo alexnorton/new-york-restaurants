@@ -9,7 +9,7 @@ function Pagination({ current, total, onPageChange }) {
   const currentPage = current ? parseInt(current, 10) : 1;
 
   return (
-    <PaginationElement>
+    <PaginationElement listClassName="justify-content-center">
       <PaginationItem disabled={currentPage === 1}>
         <PaginationLink
           onClick={() => onPageChange(currentPage - 1)}
