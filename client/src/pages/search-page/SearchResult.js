@@ -19,7 +19,7 @@ function SearchResult({
   return (
     <div className="d-flex align-items-center mb-4">
       <div className="flex-grow-1">
-        <Link to={`/${camis}`}>
+        <Link to={{ pathname: `/${camis}`, state: { name } }}>
           <h3>{name}</h3>
         </Link>
         <p className="mb-0">

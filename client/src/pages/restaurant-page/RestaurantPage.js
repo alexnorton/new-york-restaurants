@@ -8,47 +8,55 @@ function RestaurantPage(props) {
     `restaurants/${props.match.params.camis}`
   );
 
+  const name =
+    (props.location.state && props.location.state.name) || (data && data.name);
+
+  let content;
+
   if (loading) {
-    return <Loading />;
+    content = <Loading />;
+  } else if (error) {
+    content = <div>Error loading restaurant: ${error.message}</div>;
+  } else {
+    const {
+      cuisine,
+      building,
+      street,
+      borough,
+      zipCode,
+      phone,
+      inspections,
+    } = data;
+
+    const sortedInspections = inspections.sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+
+    content = (
+      <>
+        <p>
+          <strong>Cuisine:</strong> {cuisine}
+          <br />
+          <strong>Address:</strong> {building} {street}, {borough}, {zipCode}
+          <br />
+          <strong>Phone:</strong> {phone}
+        </p>
+        <h3>Inspections</h3>
+        {sortedInspections.map((inspection, index) => (
+          <Inspection
+            key={inspection.inspectionId}
+            inspection={inspection}
+            startOpen={index === 0}
+          />
+        ))}
+      </>
+    );
   }
-
-  if (error) {
-    return <div>Error loading restaurant: ${error.message}</div>;
-  }
-
-  const {
-    name,
-    cuisine,
-    building,
-    street,
-    borough,
-    zipCode,
-    phone,
-    inspections,
-  } = data;
-
-  const sortedInspections = inspections.sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
 
   return (
     <>
-      <h2>{name}</h2>
-      <p>
-        <strong>Cuisine:</strong> {cuisine}
-        <br />
-        <strong>Address:</strong> {building} {street}, {borough}, {zipCode}
-        <br />
-        <strong>Phone:</strong> {phone}
-      </p>
-      <h3>Inspections</h3>
-      {sortedInspections.map((inspection, index) => (
-        <Inspection
-          key={inspection.inspectionId}
-          inspection={inspection}
-          startOpen={index === 0}
-        />
-      ))}
+      {name && <h2>{name}</h2>}
+      {content}
     </>
   );
 }
