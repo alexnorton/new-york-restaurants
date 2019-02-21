@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import apiRequest from '../../helpers/apiRequest';
+import React from 'react';
+import useApiRequest from '../../helpers/useApiRequest';
 import Inspection from './Inspection';
 
 function RestaurantPage(props) {
-  const [result, setResult] = useState();
+  const { loading, error, data } = useApiRequest(
+    `restaurants/${props.match.params.camis}`
+  );
 
-  async function fetchResult() {
-    const apiResult = await apiRequest(
-      `restaurants/${props.match.params.camis}`
-    );
-
-    setResult(apiResult);
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  useEffect(() => {
-    fetchResult();
-  }, []);
-
-  if (!result) {
-    return <div>Loading...</div>;
+  if (error) {
+    return <div>Error loading restaurant: ${error.message}</div>;
   }
 
   const {
@@ -30,7 +24,7 @@ function RestaurantPage(props) {
     zipCode,
     phone,
     inspections,
-  } = result;
+  } = data;
 
   const sortedInspections = inspections.sort(
     (a, b) => new Date(b.date) - new Date(a.date)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'reactstrap';
 
-import apiRequest from '../../helpers/apiRequest';
+import useApiRequest from '../../helpers/useApiRequest';
 import {
   searchStringToObject,
   objectToSearchString,
@@ -21,23 +21,38 @@ function SearchPage(props) {
 
   const [params, setParams] = useState(initialParams);
 
-  const [result, setResult] = useState();
-
-  async function fetchResult() {
-    const apiResult = await apiRequest('restaurants', params);
-
-    setResult(apiResult);
-  }
-
   useEffect(() => {
     const search = objectToSearchString(params);
 
     if (props.location.search !== search) {
       props.history.push({ search });
     }
-
-    fetchResult();
   }, [params]);
+
+  const { loading, error, data } = useApiRequest('restaurants', params);
+
+  let content;
+
+  if (loading) {
+    content = 'Loading...';
+  } else if (error) {
+    content = `Error loading results: ${error.message}`;
+  } else {
+    content = (
+      <>
+        <p className="text-right">{data.total} restaurants found</p>
+        <SearchResults results={data.results} />
+        <Pagination
+          current={params.page}
+          total={data && data.pages}
+          onPageChange={page => {
+            setParams({ ...params, page });
+            window.scrollTo(0, 0);
+          }}
+        />
+      </>
+    );
+  }
 
   return (
     <div>
@@ -55,22 +70,7 @@ function SearchPage(props) {
             onGradeChange={grade => setParams({ ...params, page: 1, grade })}
           />
         </Col>
-        <Col xs="8">
-          {result && (
-            <>
-              <p className="text-right">{result.total} restaurants found</p>
-              <SearchResults results={result.results} />
-              <Pagination
-                current={params.page}
-                total={result && result.pages}
-                onPageChange={page => {
-                  setParams({ ...params, page });
-                  window.scrollTo(0, 0);
-                }}
-              />
-            </>
-          )}
-        </Col>
+        <Col xs="8">{content}</Col>
       </Row>
     </div>
   );
