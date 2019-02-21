@@ -1,5 +1,6 @@
 import React from 'react';
 import useApiRequest from '../../helpers/useApiRequest';
+import Loading from '../../components/Loading';
 import Inspection from './Inspection';
 
 function RestaurantPage(props) {
@@ -8,7 +9,7 @@ function RestaurantPage(props) {
   );
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {

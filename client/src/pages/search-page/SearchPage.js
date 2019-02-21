@@ -6,6 +6,7 @@ import {
   searchStringToObject,
   objectToSearchString,
 } from '../../helpers/searchString';
+import Loading from '../../components/Loading';
 import SearchResults from './SearchResults';
 import Pagination from './Pagination';
 import CuisineFilter from './CuisineFilter';
@@ -34,7 +35,7 @@ function SearchPage(props) {
   let content;
 
   if (loading) {
-    content = 'Loading...';
+    content = <Loading />;
   } else if (error) {
     content = `Error loading results: ${error.message}`;
   } else {
