@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-secret-pw
+  server:
+    build:
+      context: ..
+      dockerfile: docker/server/Dockerfile
+  nginx:
+    build:
+      context: ..
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - 8080:80
