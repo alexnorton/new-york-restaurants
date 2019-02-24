@@ -211,4 +211,5 @@ def get_cuisines():
     return jsonify([row[0] for row in rows])
 
 
-app.run()
+if __name__ == "__main__":
+    app.run()
