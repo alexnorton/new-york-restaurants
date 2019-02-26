@@ -13,6 +13,11 @@ services:
     build:
       context: ..
       dockerfile: docker/server/Dockerfile
+    environment:
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=my-secret-pw
+      - DATABASE_HOST=db
+      - DATABASE_NAME=restaurants
   nginx:
     build:
       context: ..
