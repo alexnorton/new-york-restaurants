@@ -42,6 +42,12 @@ pipenv install
 cd ..
 ```
 
+Copy the contents of `server/.env.example` to `server/.env`:
+
+```sh
+cp server/.env.example server/.env
+```
+
 Then start the database, API and client:
 
 ```sh
