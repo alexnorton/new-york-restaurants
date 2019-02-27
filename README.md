@@ -109,3 +109,9 @@ make prod-logs
 ```
 
 The app should be accessible on [http://localhost:8080/](http://localhost:8080/).
+
+## Potential future improvements
+
+- Improve test coverage – I couldn't find many examples of testing custom hooks and components using them, and didn't want too spend too much time trying to figure it out
+- Implement some kind of component prop type checking, either by converting the app to TypeScript or using the prop-types package
+- Split the API implementation into multiple files to make the code a bit more managable
