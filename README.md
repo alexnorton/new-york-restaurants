@@ -51,7 +51,7 @@ make dev-start
 Then, in a separate terminal, create the database:
 
 ```sh
-docker exec -i $(docker-compose -f docker/docker-compose.dev.yml ps -q db) mysql -uroot -pmy-secret-pw -e "CREATE DATABASE `restaurants`;"
+docker exec -i $(docker-compose -f docker/docker-compose.dev.yml ps -q db) mysql -uroot -pmy-secret-pw -e 'CREATE DATABASE `restaurants`;'
 ```
 
 Import data dump:
