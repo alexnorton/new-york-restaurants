@@ -87,7 +87,7 @@ make prod-start
 Create the database (if not using data previously created in development mode):
 
 ```sh
-docker exec -i $(docker-compose -f docker/docker-compose.prod.yml ps -q db) mysql -uroot -pmy-secret-pw -e "CREATE DATABASE `restaurants`;"
+docker exec -i $(docker-compose -f docker/docker-compose.prod.yml ps -q db) mysql -uroot -pmy-secret-pw -e 'CREATE DATABASE `restaurants`;'
 ```
 
 Import data dump:
