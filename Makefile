@@ -11,7 +11,7 @@ prod-build:
 	docker-compose -f docker/docker-compose.prod.yml build
 
 .PHONY: prod-start
-prod-build:
+prod-start:
 	docker-compose -f docker/docker-compose.prod.yml up -d
 
 .PHONY: stop-prod
