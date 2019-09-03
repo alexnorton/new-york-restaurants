@@ -2,8 +2,6 @@
 
 A web app for browsing New York restaurants and their hygiene ratings based on [this data dump](https://s3.amazonaws.com/orcd-hw/thai_data_dump_7-18-18.sql).
 
-Try it out [here](https://new-york-restaurants.h.alexnorton.com).
-
 ## Overview
 
 ### Frontend
